@@ -87,6 +87,61 @@ const getUserHandler = async (req, res) => {
     }
 };
 
+// @desc Update Users
+// @route PUT /v1/Users/:id
+// @access Private
+const updateUserHandler = async (req, res) => {
+    try {
+      const { id } = req.params;
+      let { name, email } = req.body;
+  
+      if (typeof id !== 'string') {
+          return res.status(400).json({
+              message: 'Id must be a string',
+          });
+      }
+  
+      if (typeof name !== "string") {
+        res.status(400).json({
+          message: "name must be string",
+        });
+        return;
+      }
+
+      if (typeof email !== "string") {
+        res.status(400).json({
+          message: "email must be string",
+        });
+        return;
+      } else if (!email.includes("@")) {
+        res.status(400).json({
+          message: "Enter vaild email",
+        });
+      }
+  
+      const user = await User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (!user) {
+        res.status(404).json({
+          message: "User Not Found",
+        });
+        return;
+      }
+      user.name = name;
+      user.email = email;
+      await user.save();
+
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({
+        message: "error message",
+      });
+    }
+  };
+
 // @desc Login User
 // @route GET /v1/users/login
 // @access Public
@@ -119,9 +174,39 @@ const loginUserHandler = async (req, res) => {
     });
 };
 
+const deleteUserHandler = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (typeof id !== 'string') {
+            return res.status(400).json({
+                message: 'Id must be a string',
+            });
+        }
+
+        const user = await user.findByPk(id);
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+
+        await user.destroy();
+        res.status(204).json({
+            message: "user Deleted successfully",
+          });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
+};
+
 
 module.exports = {
     createUserHandler,
     getUserHandler,
+    updateUserHandler,
     loginUserHandler,
+    deleteUserHandler
 }

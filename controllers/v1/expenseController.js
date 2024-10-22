@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const Expense = require('../../models/Expense');
+const Expense = require('../../models/expense');
 const Category = require('../../models/Category');
 const User = require('../../models/User');
 

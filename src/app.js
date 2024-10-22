@@ -10,7 +10,7 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-    origin: 'https://localhost:8888',
+    origin: 'https://greenmark.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }
 app.use(cors(corsOptions));

@@ -1,30 +1,28 @@
-const { Datatypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const User = require('./user');
+const User = require('./User');
 
-const Notification = sequelize.define(Notification, {
-  id: {
-    type: Datatypes.UUID,
-    defaultValue: Datatypes.UUIDV4,
-    primaryKey: true,
-  },
-  message: {
-    type: Datatypes.STRING,
-    allowNull: false,
-  },
-  UserId: {
-    type: Datatypes.UUID,
-    references: {
-      model: User,
-      key: 'id,'
+const Notification = sequelize.define('Notification', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
     },
-  },
+    message: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    UserId: {
+        type: DataTypes.UUID,
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
 }, {
     timestamps: true,
 });
 
-Notification.belongsTo(User, {
-  foreignKey: 'UserId', as:'user'
-});
+Notification.belongsTo(User, { foreignKey: 'UserId', as: 'user' });
 
 module.exports = Notification;

@@ -1,27 +1,29 @@
-const { Datatypes } = require('sequelize');
+
+const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const User = require('./User');
-const Category = require('./category');
+const Category = require('./Category');
 
-const Expenses = sequelize.define(Expenses, {
+const Expense = sequelize.define('Expense', {
     id: {
-      type: Datatypes.UUID,
-      defaultValue: Datatypes.UUIDV4,
-      primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
     },
     amount: {
-      type: Datatypes.DECIMAL,
-      allowNull: false,
+        type: DataTypes.DECIMAL,
+        allowNull: false,
     },
     narration: {
-      type: Datatypes.STRING,
-      allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: false,
     },
 }, {
     timestamps: true,
 });
 
-Expenses.belongsTo(Category);
-Expenses.belongsTo(User, { foreignKey: 'UserId', as: 'user' });
+Expense.belongsTo(Category);
+Expense.belongsTo(User, { foreignKey: 'UserId', as: 'user' });
 
-module.exports = Expenses;
+
+module.exports = Expense;
